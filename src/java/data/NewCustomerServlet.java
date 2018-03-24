@@ -78,7 +78,6 @@ public class NewCustomerServlet extends HttpServlet {
 
         // get current action
         String action = request.getParameter("action");
-        System.out.println("*** NewCustomerServlet - action:" + action);
         if (action == null) {
             action = "signin";  // default action
         }

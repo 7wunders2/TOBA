@@ -16,8 +16,7 @@
         <h1>Titan Online Banking</h1>
             <nav>
               <a href="index.html">Home</a> &nbsp; 
-              <a href="checking.html">Checking</a> &nbsp;
-              <a href="savings.html">Savings</a> &nbsp; 
+              <a href="Login.html">Login</a>
             </nav>
         <h2>New Customer Registration</h2>
     <p>To register for online banking, please enter the information below.</p>
