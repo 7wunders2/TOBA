@@ -12,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -77,7 +78,6 @@ public class LoginServlet extends HttpServlet {
 
         // get current action
         String action = request.getParameter("action");
-        System.out.println("*** LoginServlet - action:" + action);
         
         if (action == null) {
             action = "signin";  // default action
@@ -91,21 +91,34 @@ public class LoginServlet extends HttpServlet {
             String username = request.getParameter("username");
             String password = request.getParameter("password");
             
-                        // validate the parameters
+            // validate the parameters
             String message;
             if (username.equals("jsmith@toba.com") && 
                     password.equals("letmein"))
                 {
-                System.out.println("*** LoginServlet - jsmith successfully logged in");
-                 url = "/Account_activity.html";
+                // Add a make believe user to session scope so that Account_activity will recognize
+                User user = new User("John", "Smith", "999-999-9999", "123 Bogus Lane", "Clearwater",
+                    "FL", "98765", "jsmith@toba.com", "smith98765", "letmein");
+                HttpSession session = request.getSession();
+                session.setAttribute("user", user);
+                url = "/Account_activity.jsp";
             }
             else
             {
-                System.out.println("*** LoginServlet - login failure");
-                url = "/Login_failure.html";
+                url = "/Login_failure.jsp";
             }
         }
-                // forward request and response objects to specified URL
+        else if (action.equals("pw_reset")) {
+            String password = request.getParameter("password");
+            HttpSession session = request.getSession();
+                        
+            User user = (User) session.getAttribute("user");
+            session.setAttribute("password", password); 
+            session.setAttribute("user", user);   
+            url = "/Account_activity.jsp";   
+         }
+        
+        // forward request and response objects to specified URL
         getServletContext()
             .getRequestDispatcher(url)
             .forward(request, response);

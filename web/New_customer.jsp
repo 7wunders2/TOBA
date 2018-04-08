@@ -4,20 +4,11 @@
     Author     : Rose
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="utf-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:import url="/includes/header.html" />
+
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>New Customer Registration</title>
-        <link rel="stylesheet" href="styles/main.css" type="text/css"/>
-    </head>
-    <body>
-        <h1>Titan Online Banking</h1>
-            <nav>
-              <a href="index.html">Home</a> &nbsp; 
-              <a href="Login.html">Login</a>
-            </nav>
         <h2>New Customer Registration</h2>
     <p>To register for online banking, please enter the information below.</p>
     <p><i>${message}</i></p>
@@ -42,5 +33,5 @@
         <label>&nbsp;</label>
         <input type="submit" value="Register" class="margin_left">
     </form>
-    </body>
-</html>
+<c:import url="/includes/footer.jsp" />
+

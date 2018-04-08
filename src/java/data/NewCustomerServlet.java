@@ -12,6 +12,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import business.User;
+import java.util.Enumeration;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -91,12 +94,29 @@ public class NewCustomerServlet extends HttpServlet {
             String firstName = request.getParameter("firstName");
             String lastName = request.getParameter("lastName");
             String phone = request.getParameter("phone");
+            
             String address = request.getParameter("address");
             String city = request.getParameter("city");
             String state = request.getParameter("state");
             String zip = request.getParameter("zip");
             String email = request.getParameter("email");
 
+            String username = lastName + zip;
+            String password = "welcome1";
+        
+            // store data in User object
+            User user = new User(firstName, lastName, phone, address, city,
+                state, zip, email, username, password);
+            
+            HttpSession session = request.getSession();
+            session.setAttribute("user", user);
+           
+        // remove this?????
+            Enumeration names = session.getAttributeNames();
+            while (names.hasMoreElements()) {
+                System.out.println((String) names.nextElement());
+            }
+            
             // validate the parameters
             String message;
             if (firstName == null || lastName == null || email == null ||
@@ -107,12 +127,15 @@ public class NewCustomerServlet extends HttpServlet {
                 state.isEmpty() || zip.isEmpty()) {
                 message = "Please fill out all the form fields.";
                 url = "/New_customer.jsp";
-                } 
-            else {
+                }
+             else {
                 message = "";
-                url = "/Success.html";
+                request.setAttribute("user", user);
+                url = "/Success.jsp";
             }
-           request.setAttribute("message", message);
+            
+           request.setAttribute("message", message);          
+
         }
         
         // forward request and response objects to specified URL
