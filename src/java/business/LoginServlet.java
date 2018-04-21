@@ -5,6 +5,7 @@
  */
 package business;
 
+import data.UserDB;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -91,21 +92,24 @@ public class LoginServlet extends HttpServlet {
             String username = request.getParameter("username");
             String password = request.getParameter("password");
             
-            // validate the parameters
-            String message;
-            if (username.equals("jsmith@toba.com") && 
-                    password.equals("letmein"))
-                {
-                // Add a make believe user to session scope so that Account_activity will recognize
-                User user = new User("John", "Smith", "999-999-9999", "123 Bogus Lane", "Clearwater",
-                    "FL", "98765", "jsmith@toba.com", "smith98765", "letmein");
-                HttpSession session = request.getSession();
-                session.setAttribute("user", user);
-                url = "/Account_activity.jsp";
+            // get user object from the seesion
+            HttpSession session = request.getSession();
+            User user = (User) session.getAttribute("user");
+            
+            if (user == null) {
+                url = "/Login_failure.jsp";
             }
             else
             {
-                url = "/Login_failure.jsp";
+                // validate the parameters
+                if (username.equals(user.getUsername()) &&
+                        password.equals(user.getPassword())) {            
+                    url = "/Account_activity.jsp";
+                }
+                else
+                {
+                    url = "/Login_failure.jsp";
+                }
             }
         }
         else if (action.equals("pw_reset")) {
@@ -113,8 +117,10 @@ public class LoginServlet extends HttpServlet {
             HttpSession session = request.getSession();
                         
             User user = (User) session.getAttribute("user");
-            session.setAttribute("password", password); 
-            session.setAttribute("user", user);   
+            user.setPassword(password);
+            UserDB.update(user);
+            
+            session.setAttribute("user", user);                       
             url = "/Account_activity.jsp";   
          }
         

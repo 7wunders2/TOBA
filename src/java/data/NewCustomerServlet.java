@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import business.User;
-import java.util.Enumeration;
+import data.UserDB;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -100,23 +100,7 @@ public class NewCustomerServlet extends HttpServlet {
             String state = request.getParameter("state");
             String zip = request.getParameter("zip");
             String email = request.getParameter("email");
-
-            String username = lastName + zip;
-            String password = "welcome1";
-        
-            // store data in User object
-            User user = new User(firstName, lastName, phone, address, city,
-                state, zip, email, username, password);
-            
-            HttpSession session = request.getSession();
-            session.setAttribute("user", user);
            
-        // remove this?????
-            Enumeration names = session.getAttributeNames();
-            while (names.hasMoreElements()) {
-                System.out.println((String) names.nextElement());
-            }
-            
             // validate the parameters
             String message;
             if (firstName == null || lastName == null || email == null ||
@@ -129,13 +113,30 @@ public class NewCustomerServlet extends HttpServlet {
                 url = "/New_customer.jsp";
                 }
              else {
-                message = "";
-                request.setAttribute("user", user);
-                url = "/Success.jsp";
-            }
-            
-           request.setAttribute("message", message);          
+                String username = lastName + zip;
+                String password = "welcome1";
+         
+                // store data in User object
+                User user = new User(username, firstName, lastName, phone, 
+                        address, city, state, zip, email, password);
 
+                // check if user already exists
+                if (UserDB.usernameExists(user.getUsername())) {
+                    message = "This username (last name + zip) already exists.<br>" +
+                              "Please enter another username.";
+                    url = "/New_customer.jsp";
+                }
+                // add the user to the data base
+                else {      
+                    HttpSession session = request.getSession();
+                    session.setAttribute("user", user);
+                    message = "";
+
+                    UserDB.insert(user);
+                    url = "/Success.jsp";
+                }
+            } 
+           request.setAttribute("message", message);          
         }
         
         // forward request and response objects to specified URL

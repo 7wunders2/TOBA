@@ -1,9 +1,16 @@
 package business;
 
 import java.io.Serializable;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "Customer")
 public class User implements Serializable {
 
+    @Id
+    private String username; 
     private String firstName;
     private String lastName;
     private String phone;
@@ -11,11 +18,11 @@ public class User implements Serializable {
     private String city;
     private String state;
     private String zip;
-    private String email;
-    private String username;
+    private String email;  
     private String password;
-
+    
     public User() {
+        username = "";
         firstName = "";
         lastName = "";
         phone = "";
@@ -24,13 +31,13 @@ public class User implements Serializable {
         state = "";
         zip = "";
         email = "";
-        username = "";
         password = "";
     }
 
-    public User(String firstName, String lastName, String phone, 
+    public User(String username, String firstName, String lastName, String phone, 
             String address, String city, String state, String zip, 
-            String email, String username, String password) {
+            String email, String password) {
+        this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
         this.phone = phone;
@@ -39,8 +46,15 @@ public class User implements Serializable {
         this.state = state;
         this.zip = zip;
         this.email = email;
-        this.username = username;
         this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstName() {
@@ -105,14 +119,6 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;  
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     public String getPassword() {
