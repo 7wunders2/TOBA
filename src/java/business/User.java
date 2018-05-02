@@ -2,6 +2,8 @@ package business;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -10,6 +12,8 @@ import javax.persistence.Table;
 public class User implements Serializable {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long userID;
     private String username; 
     private String firstName;
     private String lastName;
@@ -22,6 +26,7 @@ public class User implements Serializable {
     private String password;
     
     public User() {
+        userID = 0L;
         username = "";
         firstName = "";
         lastName = "";
@@ -34,9 +39,10 @@ public class User implements Serializable {
         password = "";
     }
 
-    public User(String username, String firstName, String lastName, String phone, 
+    public User(Long userID, String username, String firstName, String lastName, String phone, 
             String address, String city, String state, String zip, 
             String email, String password) {
+        this.userID = userID;
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -49,6 +55,14 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    public Long getUserID() {
+        return userID;
+    }
+    
+    public void setUserID(Long userID) {
+        this.userID = userID;
+    }
+    
     public String getUsername() {
         return username;
     }

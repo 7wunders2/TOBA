@@ -115,9 +115,10 @@ public class NewCustomerServlet extends HttpServlet {
              else {
                 String username = lastName + zip;
                 String password = "welcome1";
-         
+                Long userID = 0L;
+                
                 // store data in User object
-                User user = new User(username, firstName, lastName, phone, 
+                User user = new User(userID, username, firstName, lastName, phone, 
                         address, city, state, zip, email, password);
 
                 // check if user already exists

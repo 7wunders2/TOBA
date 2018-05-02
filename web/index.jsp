@@ -10,5 +10,6 @@
 <!DOCTYPE html>    
 
     <h2>Welcome to Titan Bank!</h2>
-       
+    <br><br>
+    <a href="admin">View the Admin applications</a></p>
 <c:import url="/includes/footer.jsp" />
